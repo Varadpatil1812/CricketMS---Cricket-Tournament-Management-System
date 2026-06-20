@@ -32,10 +32,10 @@ export default function Register() {
   return (
     <div className="auth-wrap">
       <div className="auth-card" style={{ maxWidth: 480 }}>
-        <div className="auth-logo"><a href="/" >
+        <div className="auth-logo"><Link to="/" >
                     <img src={logo} alt="CricketMS" style={{ height: 40, width: 40, objectFit: "contain", borderRadius: "50%" }} />
                     CricketMS
-                  </a></div>
+                  </Link></div>
         <p className="auth-sub">Create your player account</p>
         {err && <Alert variant="danger" className="py-2 mb-3">{err}</Alert>}
         {ok  && <Alert variant="success" className="py-2 mb-3">{ok}</Alert>}

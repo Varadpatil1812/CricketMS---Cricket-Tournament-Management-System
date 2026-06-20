@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import CricketNews from '../components/CricketNews';
 import './LandingPage.css';
 import omkarMImg from '../assets/omkarM.jpg';
@@ -51,11 +52,20 @@ const stats = [
 ];
 
 export default function LandingPage() {
+  const { user, ready } = useAuth();
+  const nav = useNavigate();
   const [loaded, setLoaded] = useState(false);
   const [newsOpen, setNewsOpen] = useState(false);
   const drawerRef = useRef(null);
 
   useEffect(() => { setLoaded(true); }, []);
+
+  // If already logged in redirect to their dashboard
+  useEffect(() => {
+    if (!ready) return;
+    if (user?.role === 'admin') nav('/admin/teams', { replace: true });
+    if (user?.role === 'player') nav('/dashboard', { replace: true });
+  }, [user, ready]);
 
   // Close drawer on outside click
   useEffect(() => {
@@ -94,8 +104,26 @@ export default function LandingPage() {
           >
             📰 News
           </button>
-          <Link to="/login" className="lp-btn-outline">Login</Link>
-          <Link to="/register" className="lp-btn-green">Get Started</Link>
+          {user ? (
+            <>
+              <span style={{
+                fontSize: 13, color: '#94a3b8', fontWeight: 500,
+              }}>
+                👋 {user.name}
+              </span>
+              <button
+                className="lp-btn-green"
+                onClick={() => nav(user.role === 'admin' ? '/admin/teams' : '/dashboard')}
+              >
+                Go to Dashboard →
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="lp-btn-outline">Login</Link>
+              <Link to="/register" className="lp-btn-green">Get Started</Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -144,6 +172,7 @@ export default function LandingPage() {
               <span className="lp-stat-label">{label}</span>
             </div>
           ))}
+          <div className="lp-stats-hint">👀 Click to browse as Viewer →</div>
         </Link>
       </header>
 

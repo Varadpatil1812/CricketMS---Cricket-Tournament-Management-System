@@ -221,7 +221,117 @@ h1,h2,h3,h4,h5,.brand-text,.page-title,.stat-val,.rj{font-family:'Rajdhani',sans
 /* ── ALERT ── */
 .alert{border-radius:6px;font-size:.85rem}
 
+/* ── HAMBURGER BUTTON ── */
+.hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;align-items:center;
+  gap:5px;width:36px;height:36px;
+  background:none;border:1px solid var(--border);
+  border-radius:7px;cursor:pointer;padding:6px;
+  flex-shrink:0;transition:border-color .15s;margin-right:.5rem;
+}
+.hamburger:hover{border-color:var(--green)}
+.hamburger span{
+  display:block;width:16px;height:2px;
+  background:var(--text);border-radius:2px;
+  transition:all .25s;
+}
+
+/* ── SIDEBAR OVERLAY (mobile) ── */
+.sb-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(3px);
+  z-index:899;
+  animation:fadeIn .2s ease;
+}
+
+/* ── SIDEBAR CLOSE BUTTON ── */
+.sb-close{
+  display:none;
+  position:absolute;top:12px;right:12px;
+  background:none;border:1px solid var(--border);
+  color:var(--muted);border-radius:6px;
+  width:30px;height:30px;
+  font-size:.85rem;cursor:pointer;
+  align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.sb-close:hover{background:var(--bg3);color:var(--text)}
+
+/* ── DESKTOP: sidebar always visible ── */
+@media(min-width:769px){
+  .sidebar{transform:translateX(0) !important}
+  .sb-overlay{display:none !important}
+  .hamburger{display:none !important}
+  .sb-close{display:none !important}
+}
+
+/* ── MOBILE ── */
 @media(max-width:768px){
-  .sidebar{display:none}
+  /* Hamburger visible */
+  .hamburger{display:flex}
+
+  /* Sidebar hidden off-screen by default */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform .25s cubic-bezier(.4,0,.2,1);
+    z-index:900;
+    position:fixed;top:var(--nh);left:0;bottom:0;
+    width:var(--sw);
+  }
+
+  /* Sidebar slides in when open */
+  .sidebar--open{
+    transform:translateX(0);
+    box-shadow:4px 0 24px rgba(0,0,0,.5);
+  }
+
+  /* Show overlay when sidebar open */
+  .sidebar--open ~ .sb-overlay,
+  .sb-overlay{display:block}
+
+  /* Show close button inside sidebar */
+  .sb-close{display:flex}
+
+  /* Main content full width */
   .main{margin-left:0;padding:1rem}
+  .main.no-sb{margin-left:0}
+
+  /* Viewer layout main */
+  .main[style]{margin-left:0 !important}
+
+  /* Hide username on small screens, keep role chip */
+  .u-name--hide{display:none}
+
+  /* Tighten navbar */
+  .top-nav{padding:0 .75rem}
+  .brand-text{font-size:1.1rem}
+
+  /* Stack stat boxes */
+  .stat-box{padding:.85rem}
+  .stat-val{font-size:1.6rem}
+
+  /* Fixture cards scroll horizontally */
+  .fix-card{min-width:0;flex-wrap:wrap;gap:.5rem}
+  .fix-team{min-width:80px;font-size:.88rem}
+
+  /* Tables scroll */
+  .cc{overflow-x:auto}
+}
+
+/* ── SMALL MOBILE (≤480px) ── */
+@media(max-width:480px){
+  .top-nav{padding:0 .6rem;gap:.4rem}
+  .brand-emoji{font-size:1.2rem}
+  .brand-text{font-size:1rem}
+  .page-title{font-size:1.3rem}
+  .main{padding:.75rem}
+
+  /* Score modal full width */
+  .modal-dialog{margin:.5rem}
+
+  /* Admin form rows stack */
+  .row.g-3>[class*="col-md"]{width:100%}
 }

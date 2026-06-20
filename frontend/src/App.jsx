@@ -19,15 +19,35 @@ import AssignPlayers      from './pages/admin/AssignPlayers'
 import ManageTournaments  from './pages/admin/ManageTournaments'
 import FixturesResults    from './pages/admin/FixturesResults'
 
+/* ── Spinner shown while localStorage is being read ── */
+function FullPageSpinner() {
+  return (
+    <div style={{
+      minHeight: '100vh', background: '#0d1117',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }}>
+      <div style={{
+        width: 36, height: 36, border: '3px solid #21262d',
+        borderTopColor: '#3fb950', borderRadius: '50%',
+        animation: 'spin .7s linear infinite',
+      }} />
+    </div>
+  )
+}
+
+/* ── Guards wait for ready before redirecting ── */
 function RequireAdmin({ children }) {
-  const { user } = useAuth()
-  if (!user) return <Navigate to="/login" replace />
+  const { user, ready } = useAuth()
+  if (!ready) return <FullPageSpinner />
+  if (!user)              return <Navigate to="/login" replace />
   if (user.role !== 'admin') return <Navigate to="/" replace />
   return children
 }
+
 function RequirePlayer({ children }) {
-  const { user } = useAuth()
-  if (!user) return <Navigate to="/login" replace />
+  const { user, ready } = useAuth()
+  if (!ready) return <FullPageSpinner />
+  if (!user)               return <Navigate to="/login" replace />
   if (user.role !== 'player') return <Navigate to="/" replace />
   return children
 }
@@ -37,19 +57,19 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
 
-        {/* ── Standalone pages (no Layout wrapper) ── */}
+        {/* Landing */}
         <Route path="/" element={<LandingPage />} />
 
-        {/* ── Viewer section (own layout with sidebar) ── */}
+        {/* Viewer section */}
         <Route path="/viewer" element={<ViewerLayout />}>
-          <Route index        element={<ViewerOverview />} />
+          <Route index              element={<ViewerOverview />} />
           <Route path="teams"       element={<Teams />} />
           <Route path="players"     element={<PlayersPublic />} />
           <Route path="matches"     element={<Matches />} />
           <Route path="tournaments" element={<Tournaments />} />
         </Route>
 
-        {/* ── Auth + app pages (use main Layout) ── */}
+        {/* Main app */}
         <Route element={<Layout />}>
           <Route path="/login"    element={<Login />} />
           <Route path="/register" element={<Register />} />

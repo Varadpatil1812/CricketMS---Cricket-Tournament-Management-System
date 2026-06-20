@@ -26,10 +26,10 @@ export default function Login() {
     <div className="auth-wrap">
       <div className="auth-card">
         <div className="auth-logo">
-          <a href="/" >
-            <img src={logo} alt="CricketMS" style={{ height: 40, width: 40, objectFit: "contain", borderRadius: "50%" }} />
-            CricketMS
-          </a></div>
+          <Link to="/" >
+                              <img src={logo} alt="CricketMS" style={{ height: 40, width: 40, objectFit: "contain", borderRadius: "50%" }} />
+                              CricketMS
+                            </Link></div>
         <p className="auth-sub">Sign in to your account</p>
         {err && <Alert variant="danger" className="py-2">{err}</Alert>}
         <Form onSubmit={submit}>

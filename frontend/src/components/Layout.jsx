@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useLocation, Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
@@ -8,15 +9,19 @@ const AUTH_PAGES = ['/login', '/register']
 export default function Layout() {
   const { user } = useAuth()
   const { pathname } = useLocation()
-  const isAuthPage = AUTH_PAGES.includes(pathname)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  // Auth pages render their own full-page design
-  if (isAuthPage) return <Outlet />
+  if (AUTH_PAGES.includes(pathname)) return <Outlet />
 
   return (
     <>
-      <Navbar />
-      {user && <Sidebar />}
+      <Navbar onMenuClick={() => setSidebarOpen(o => !o)} />
+      {user && (
+        <Sidebar
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+      )}
       <main className={`main${!user ? ' no-sb' : ''}`}>
         <Outlet />
       </main>
