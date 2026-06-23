@@ -154,7 +154,7 @@ export default function LandingPage() {
         </h1>
         <p className="lp-sub">
           CricketMS is the all-in-one platform for tournament organisers, team managers and scorers.
-          From team rosters to scorecards — everything in one dashboard.
+          From team rosters to scorecards  —  everything in one dashboard.
         </p>
         <div className="lp-hero-actions">
           <Link to="/register" className="lp-btn-green lp-btn-lg">Get Start →</Link>
