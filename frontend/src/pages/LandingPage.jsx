@@ -172,7 +172,6 @@ export default function LandingPage() {
               <span className="lp-stat-label">{label}</span>
             </div>
           ))}
-          <div className="lp-stats-hint">👀 Click to browse as Viewer →</div>
         </Link>
       </header>
 
